@@ -5,10 +5,10 @@ const ServicePessoa = require('../services/pessoas')
 // criando a classe croller da pessoa
 class ControllerPessoa {
     // todas as funções do controller, recebem req, res
-    GetPessoas(req, res) {
+    async GetPessoas(req, res) {
         // todas as funções do controller, tem try carh
         try {
-            const pessoas = ServicePessoa.GetPessoas()
+            const pessoas = await ServicePessoa.GetPessoas()
             res.send({ msg: pessoas })
             
         } catch (error) {
@@ -20,11 +20,13 @@ class ControllerPessoa {
 
     }
 
-    CreatePessoa(req, res) {
+    async CreatePessoa(req, res) {
         // todas as funções do controller, tem try carh
         try {
-            const name = req.body.name
-            const pessoa = ServicePessoa.CreatePessoa(name)
+  
+            const { name, password, email } = req. body
+
+            const pessoa = await ServicePessoa.CreatePessoa(name, password, email)
             res.send({ msg: pessoa })
             
         } catch (error) {
@@ -36,12 +38,14 @@ class ControllerPessoa {
 
     }
 
-    UpdatePessoa(req, res) {
+    async UpdatePessoa(req, res) {
         // todas as funções do controller, tem try carh
         try {
             const id = req.params.id
             const name = req.body.name
-            const pessoa = ServicePessoa.UpdatePessoa(id,name)
+            const password = req.body.name
+            const email = req.body.name
+            const pessoa = await ServicePessoa.UpdatePessoa(id,name, password, email)
             res.send({ msg: pessoa })
             
         } catch (error) {
@@ -53,12 +57,12 @@ class ControllerPessoa {
 
     }
 
-    DeletePessoa(req, res) {
+    async DeletePessoa(req, res) {
         // todas as funções do controller, tem try carh
         try {
             const id = req.params.id
-            const pessoa = ServicePessoa.DeletePessoa(id)
-            res.send({ msg: pessoa })
+            await ServicePessoa.DeletePessoa(id)
+            res.status(204). send()
             
         } catch (error) {
             // todo cach vai ser assim
